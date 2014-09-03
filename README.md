@@ -1,4 +1,2 @@
 wg-ranking
 ==========
-
-First change
