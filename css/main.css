@@ -1,0 +1,58 @@
+body {
+	margin: 0;
+}
+
+header {
+	padding: 20px 2.5%;
+	text-align: center;
+	color: white;
+	background: green;
+}
+
+table {
+	max-width: 960px;
+	margin: 10px auto 40px auto;
+}
+
+thead th {
+	font-weight: 600;
+	font-size: 1.8em;
+	background: #e8eeef;
+}
+
+tr {
+	background: #f4f7f8;
+	border: 2px solid; 
+}
+
+tbody td {
+	text-align: left;
+	padding: 5px 20px 5px 5px;	
+}
+
+tfoot tr {
+	background: none;
+	border: none;
+}
+
+tfoot td {
+	padding-top: 5px;
+	font-size: .6em;
+	color: #8a97a0;
+}
+
+#points td{
+	color: red;
+	font-size: 600;
+	text-align: center;
+}
+
+#honors h2, #honors h1 {
+	margin: 20px auto;
+	text-align: center;
+}
+
+#honors h1 {
+	color: red;
+	margin-bottom: 40px;
+}
