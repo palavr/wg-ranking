@@ -1,13 +1,8 @@
+/*******************************************************************************************
+						Init Functions
+*******************************************************************************************/
+
 var dataChanged = false;
-
-// eingabe: spalte welche neu zu berechnen ist.
-function calcPoints(column) {
-	var totalPoints = 0;
-	// berechne punkte neu
-	totalPoints += 30;
-
-	return totalPoints;
-}
 
 // setze data changed listener
 // gehe alle trs durch
@@ -15,17 +10,14 @@ $('.editable').each(function(i, tr){
 	// gehe alle tds durch
 	$.each(tr.children, function(it, td){
 		addInputEvt(td);
-	});
-});
-
-// setze 
-// gehe alle trs durch
-$('.editable').each(function(i, tr){
-	// gehe alle tds durch
-	$.each(tr.children, function(it, td){
 		addBlurEvt(td);
 	});
 });
+
+
+/*******************************************************************************************
+						Event Listener
+*******************************************************************************************/
 
 // add input event listener
 function addInputEvt(td){
@@ -81,6 +73,41 @@ function addBlurEvt(td) {
 		})
 }
 
+/*******************************************************************************************
+						Local Storage Functions
+*******************************************************************************************/
+
+// check ob local storage supported wird
+function supports_html5_storage() {
+ 	 try {
+    	return 'localStorage' in window && window['localStorage'] !== null;
+	  } catch (e) {
+	    return false;
+	  }
+}
+
+// speicher table in local storage
+function saveTable() {
+
+}
+
+// lade table aus local storage
+function loadTable() {
+
+}
+
+/*******************************************************************************************
+						Page Processing Functions
+*******************************************************************************************/
+
+// eingabe: spalte welche neu zu berechnen ist.
+function calcPoints(column) {
+	var totalPoints = 0;
+	// berechne punkte neu
+	totalPoints += 30;
+
+	return totalPoints;
+}
 
 // berechne hero und villain
 /*function honor(){
