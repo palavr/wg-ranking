@@ -109,6 +109,26 @@ function load(saveId, destination) {
 						Page Processing Functions
 *******************************************************************************************/
 
+// löscht tabelle, legt neue an
+function resetTable() {
+	// lösche alle rows außer erste und letzte
+	var childs = $('#activities tbody').children();
+	$.each(childs, function(counter, item) {
+		if (counter < childs.length - 1){
+			item.remove();
+		}
+	});
+
+	// füge an 2. stelle neue row mit leeren zellen ein
+	var html = '<tr class="editable">';
+	for (var i = 0; i < $('#points').children().length; i++) {
+		html += '<td contenteditable="true"></td>';
+	}
+	html += '</tr>';
+	$(html).insertBefore('#points');
+}
+
+
 // eingabe: spalte welche neu zu berechnen ist.
 function calcPoints(column) {
 	var totalPoints = 0;
