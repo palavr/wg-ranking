@@ -32,13 +32,13 @@ function addInputEvt(td){
 function addBlurEvt(td) {
 	// bei blur event 
 		td.addEventListener('blur', function() {
-			if (dataChanged){
+			if (dataChanged && $(this).text() != ""){
 				var index = $(this).parent().children().index($(this));
 				// berechne punkte neu
 				var points = calcPoints(index);
 				// update punkte in table
 				$(this).parent().siblings(":last").children().eq(index).html(points);
-				// adde neue zelle
+				// setze neue edit zelle
 				// prüfe ob spalte max einträge hat
 				var bool = $('#activities tbody tr:nth-last-child(2)').children().eq(index).text()!="";
 				if (!bool) {
@@ -87,13 +87,22 @@ function supports_html5_storage() {
 }
 
 // speicher table in local storage
-function saveTable() {
-
+function saveTable(saveId) {
+	if (supports_html5_storage){
+		localStorage['tableActivities'] = $('#activities').html();
+		return true;
+	}
+	return false;
 }
 
 // lade table aus local storage
-function loadTable() {
-
+function load(saveId, destination) {
+	if (supports_html5_storage && localStorage[saveId] != null) {
+		localStorage.removeItem('table_activities');
+		$(destination).html(localStorage[saveId]);
+		return true;
+	}
+	return false;
 }
 
 /*******************************************************************************************
