@@ -126,6 +126,12 @@ function resetTable() {
 	}
 	html += '</tr>';
 	$(html).insertBefore('#points');
+
+	// add blur event listener für alle children von neuem tr
+	$.each($('#activities tbody tr:nth-last-child(2)').children(), function(indexInArray, newTd) {
+		addBlurEvt(newTd);
+		addInputEvt(newTd);
+	});
 }
 
 // eingabe: spalte welche neu zu berechnen ist.
