@@ -2,12 +2,20 @@ body {
 	margin: 0;
 }
 
+/****************************************************
+					Header
+****************************************************/
+
 header {
 	padding: 20px 2.5%;
 	text-align: center;
 	color: white;
 	background: green;
 }
+
+/****************************************************
+					Table
+****************************************************/
 
 table {
 	width: 80%;
@@ -47,6 +55,10 @@ tfoot td {
 	text-align: center;
 }
 
+/****************************************************
+					Siegerehrung
+****************************************************/
+
 #honors h2, #honors h1 {
 	margin: 20px auto;
 	text-align: center;
@@ -55,4 +67,19 @@ tfoot td {
 #honors h1 {
 	color: red;
 	margin-bottom: 40px;
+}
+
+/****************************************************
+					Buttons
+****************************************************/
+
+
+#buttons {
+	text-align: left;
+	padding-left: 10%;
+
+}
+
+#buttons input {
+	margin-right: 2.5%;
 }

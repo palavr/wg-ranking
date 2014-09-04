@@ -1,5 +1,5 @@
 /*******************************************************************************************
-						Init Functions
+						Init 
 *******************************************************************************************/
 
 var dataChanged = false;
@@ -33,7 +33,7 @@ function addBlurEvt(td) {
 	// bei blur event 
 		td.addEventListener('blur', function() {
 			if (dataChanged && $(this).text() != ""){
-				var index = $(this).parent().children().index($(this));
+				var index = getIndex(this);
 				// berechne punkte neu
 				var points = calcPoints(index);
 				// update punkte in table
@@ -43,7 +43,7 @@ function addBlurEvt(td) {
 				var bool = $('#activities tbody tr:nth-last-child(2)').children().eq(index).text()!="";
 				if (!bool) {
 					// falls nein: setze nächste (ex) zelle auf contenteditable	
-					$(this).parent().next().children().eq(index).attr('contenteditable', 'true');
+					cellBelow(this).attr('contenteditable', 'true');
 				} else {
 					// falls ja: füge neue tr hinzu
 					var html = "<tr>";	
@@ -128,7 +128,6 @@ function resetTable() {
 	$(html).insertBefore('#points');
 }
 
-
 // eingabe: spalte welche neu zu berechnen ist.
 function calcPoints(column) {
 	var totalPoints = 0;
@@ -146,4 +145,36 @@ function calcPoints(column) {
 	})
 }*/
 
+/*******************************************************************************************
+						Utility Functions
+*******************************************************************************************/
 
+// gibt zelle darüber an
+function cellAbove(td) {
+	return $(td).parent().prev().children().eq(getIndex(td));
+}
+
+// gibt zelle darunter an
+function cellBelow(td) {
+	return $(td).parent().next().children().eq(getIndex(td));
+}
+
+// gibt index der zelle an (= spalte) 
+function getIndex(td) {
+	return $(td).parent().children().index($(td));
+}
+
+// löscht einzelne zelle, !!TODO!!
+function deleteCell(td) {
+	if (!td.parent().hasClass("editable")) {
+		return false;
+	}
+	// get index of cell
+
+	// gehe alle zellen danach durch
+		// gehe alle tr danach durch
+		// schiebe zelle 1 tr nach oben 
+		// lasse letzte 2 tr aus
+		// fülle tr-3 mit leerer zelle
+
+}
