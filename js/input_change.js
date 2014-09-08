@@ -37,7 +37,7 @@ function addBlurEvt(td) {
 				// berechne punkte neu
 				var points = calcPoints(index);
 				// update punkte in table
-				$(this).parent().siblings(":last").children().eq(index).html(points);
+				$('#pointsTotal').children().eq(index).html(points);
 				// setze neue edit zelle
 				// prüfe ob spalte max einträge hat
 				var bool = $('#activities tbody tr:nth-last-child(2)').children().eq(index).text()!="";
@@ -59,7 +59,7 @@ function addBlurEvt(td) {
 					}
 					html += "</tr>";
 					// append html to table TODO: vorletzte zeile
-					$(html).insertBefore('#points');
+					$(html).insertBefore('#pointsTotal');
 
 					// add blur event listener für alle children von neuem tr
 					$.each($('#activities tbody tr:nth-last-child(2)').children(), function(indexInArray, newTd) {
@@ -121,11 +121,11 @@ function resetTable() {
 
 	// füge an 2. stelle neue row mit leeren zellen ein
 	var html = '<tr class="editable">';
-	for (var i = 0; i < $('#points').children().length; i++) {
+	for (var i = 0; i < $('#pointsTotal').children().length; i++) {
 		html += '<td contenteditable="true"></td>';
 	}
 	html += '</tr>';
-	$(html).insertBefore('#points');
+	$(html).insertBefore('#pointsTotal');
 
 	// add blur event listener für alle children von neuem tr
 	$.each($('#activities tbody tr:nth-last-child(2)').children(), function(indexInArray, newTd) {
@@ -134,7 +134,7 @@ function resetTable() {
 	});
 }
 
-// eingabe: spalte welche neu zu berechnen ist.
+// eingabe: spalte welche neu zu berechnen ist.		!! TODO !!
 function calcPoints(column) {
 	var totalPoints = 0;
 	// berechne punkte neu
@@ -143,13 +143,50 @@ function calcPoints(column) {
 	return totalPoints;
 }
 
-// berechne hero und villain
+// berechne hero und villain	!! TODO !!
 /*function honor(){
 	val ind=0;
 	$.each(array, function(i, val) {
 
 	})
 }*/
+
+///////		VERWALTUNG
+
+function addNewActivity() {
+	// lies act aus
+	var activity= $('#dialog').children(':first').val();
+	// überprüfe ob act != ""	
+	if (activity=="") {
+		// falls nein
+			// fehlermeldung	
+	} else {
+		// falls ja
+			// lies values aus
+			var pts = $('#dialog').children(':eq(1)').val();
+			var html = '<tr class="editable">' + '<td>'  + activity + '</td><td>' + pts + '</td></tr>';
+			// trage values in tablle ein
+			$('#punkte').append(html);
+			// lösche text felder
+			$('#dialog').children(':first').val("");
+			$('#dialog').children(':eq(1)').val("");
+			// hide dialog, show btn
+			$('#dialog').hide();
+			$('#showDialogBtn').show();
+	}
+}
+
+function showDialog() {
+	// open dialog	
+	$('#dialog').show();
+	// hide btn
+	$('#showDialogBtn').hide();
+}
+
+
+
+
+
 
 /*******************************************************************************************
 						Utility Functions
