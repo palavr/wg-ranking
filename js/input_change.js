@@ -36,8 +36,6 @@ function addBlurEvt(td) {
 				var index = getIndex(this);
 				// berechne punkte neu
 				var points = calcPoints(index);
-				// update punkte in table
-				$('#pointsTotal').children().eq(index).html(points);
 				// setze neue edit zelle
 				// prüfe ob spalte max einträge hat
 				var bool = $('#activities tbody tr:nth-last-child(2)').children().eq(index).text()!="";
@@ -86,19 +84,18 @@ function supports_html5_storage() {
 	  }
 }
 
-// speicher table in local storage
-function saveTable(saveId) {
+// speicher item in local storage unter saveId
+function save(saveId, item) {
 	if (supports_html5_storage){
-		localStorage['tableActivities'] = $('#activities').html();
+		localStorage[saveId] = $(item).html();
 		return true;
 	}
 	return false;
 }
 
-// lade table aus local storage
+// lade saveId aus local storage in destination
 function load(saveId, destination) {
 	if (supports_html5_storage && localStorage[saveId] != null) {
-		localStorage.removeItem('table_activities');
 		$(destination).html(localStorage[saveId]);
 		return true;
 	}
@@ -134,13 +131,28 @@ function resetTable() {
 	});
 }
 
-// eingabe: spalte welche neu zu berechnen ist.		!! TODO !!
+// eingabe: spalte welche neu zu berechnen ist.	column ist 0-indiziert. 	!! TODO !!
 function calcPoints(column) {
 	var totalPoints = 0;
-	// berechne punkte neu
-	totalPoints += 30;
+	var childs = $('#activities tbody').children();
+	
+	// gehe alle außer erster und letzter row durch
+	for (var i = 0; i < childs.length -1; i++) {
+			// lies act aus
+			var act = $(childs[i]).children(':first').html();
+			// falls leer
+			if (act == "") {
+					// update punkte in table
+					$('#pointsTotal').children().eq(column).html(totalPoints);
+					return;
+			} else {
+				// lies tabelle aus  
+				// schaue in tabelle punkte nach, adde zu total
+				var newPoints = lookupActivityPoints(act);
+				totalPoints += newPoints;
+			}
+	}
 
-	return totalPoints;
 }
 
 // berechne hero und villain	!! TODO !!
@@ -164,6 +176,10 @@ function addNewActivity() {
 		// falls ja
 			// lies values aus
 			var pts = $('#dialog').children(':eq(1)').val();
+			// falls pts leer defaultwert nehmen
+			if (pts=="") { 
+				pts = 10;
+			}
 			var html = '<tr class="editable">' + '<td>'  + activity + '</td><td>' + pts + '</td></tr>';
 			// trage values in tablle ein
 			$('#punkte').append(html);
@@ -182,8 +198,6 @@ function showDialog() {
 	// hide btn
 	$('#showDialogBtn').hide();
 }
-
-
 
 
 
@@ -220,4 +234,31 @@ function deleteCell(td) {
 		// lasse letzte 2 tr aus
 		// fülle tr-3 mit leerer zelle
 
+}
+
+// gibt punkte für activity zurück. falls nicht gefunden -1. FUNKTIONIERT NUR IN VERWALTUNG
+function lookupActivityPoints(act) {	
+	// gehe alle trs von punkte durch
+	var childs = $('#punkte');
+	var dummy = "something";
+	console.log("lookup received: " + act);
+	console.log(childs);
+	$.each(childs, function(i, item) {	
+		console.log("hi");
+		//console.log("iter:" + i + ", item: " + $(item).children().first().html());
+		// schaue ob tr[0] == act ist
+		if (act == $(item).children().first().html()) {
+			// falls ja return tr[1]
+			dummy = $(item).children().last().html();
+			console.log(found);
+			return;
+		}
+	});
+		
+	console.log("pre return: " +dummy);
+	if (dummy == "something") {
+		// falls nichts gefunden return -1
+		return -1; 
+	}
+	return dummy;
 }
