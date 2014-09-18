@@ -18,14 +18,16 @@
 			</ul>
 		</nav>
 		<table id="activities">
-			<thead>
+			
+			<?php include("inc/loadActTable.php");?>
+			<!--thead>
 				<tr>
 					<th>Julian</th>
 					<th>Bernie</th>
 					<th>Christian</th>
 					<th>Joshua</th>
 				</tr>
-			</thead>
+			</thead-->
 			<tfoot>
 				<tr>
 					<td colspan="3">Alle Angaben sind wie immer ohne Gew&aumlhr.</td>
