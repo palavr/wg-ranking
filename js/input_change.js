@@ -133,25 +133,8 @@ function resetTable() {
 
 // eingabe: spalte welche neu zu berechnen ist.	column ist 0-indiziert. 	!! TODO !!
 function calcPoints(column) {
-	var totalPoints = 0;
-	var childs = $('#activities tbody').children();
-	
-	// gehe alle außer erster und letzter row durch
-	for (var i = 0; i < childs.length -1; i++) {
-			// lies act aus
-			var act = $(childs[i]).children(':first').html();
-			// falls leer
-			if (act == "") {
-					// update punkte in table
-					$('#pointsTotal').children().eq(column).html(totalPoints);
-					return;
-			} else {
-				// lies tabelle aus  
-				// schaue in tabelle punkte nach, adde zu total
-				var newPoints = lookupActivityPoints(act);
-				totalPoints += newPoints;
-			}
-	}
+	var totalPoints = 30;
+	return totalPoints;
 
 }
 
@@ -234,31 +217,4 @@ function deleteCell(td) {
 		// lasse letzte 2 tr aus
 		// fülle tr-3 mit leerer zelle
 
-}
-
-// gibt punkte für activity zurück. falls nicht gefunden -1. FUNKTIONIERT NUR IN VERWALTUNG
-function lookupActivityPoints(act) {	
-	// gehe alle trs von punkte durch
-	var childs = $('#punkte');
-	var dummy = "something";
-	console.log("lookup received: " + act);
-	console.log(childs);
-	$.each(childs, function(i, item) {	
-		console.log("hi");
-		//console.log("iter:" + i + ", item: " + $(item).children().first().html());
-		// schaue ob tr[0] == act ist
-		if (act == $(item).children().first().html()) {
-			// falls ja return tr[1]
-			dummy = $(item).children().last().html();
-			console.log(found);
-			return;
-		}
-	});
-		
-	console.log("pre return: " +dummy);
-	if (dummy == "something") {
-		// falls nichts gefunden return -1
-		return -1; 
-	}
-	return dummy;
 }

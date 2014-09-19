@@ -1,4 +1,9 @@
+<?php
+	header('Content-type: text/html; charset=utf-8');
+?>
 <!DOCTYPE html>
+
+
 <html>
 	<head>
 		<meta charset="uft-8">
@@ -13,53 +18,11 @@
 		</header>
 		<nav>
 			<ul>
-				<li><a href="index.html" class="selected">Punktestand</a></li>
+				<li><a href="index.php" class="selected">Punktestand</a></li>
 				<li><a href="verwaltung.html">WG-Verwaltung</a></li>
 			</ul>
 		</nav>
-		<table id="activities">
-			
-			<?php include("inc/loadActTable.php");?>
-			<!--thead>
-				<tr>
-					<th>Julian</th>
-					<th>Bernie</th>
-					<th>Christian</th>
-					<th>Joshua</th>
-				</tr>
-			</thead-->
-			<tfoot>
-				<tr>
-					<td colspan="3">Alle Angaben sind wie immer ohne Gew&aumlhr.</td>
-				</tr>
-			</tfoot>
-			<tbody>
-				<tr class="editable">	
-					<td contenteditable="true"></td>
-					<td>Einkaufen</td>
-					<td>Designated Driver</td>
-					<td>M&uumlll rausbringen</td>
-				</tr>
-				<tr class="editable">
-					<td></td>				
-					<td contenteditable="true"></td>
-					<td contenteditable="true"></td>
-					<td contenteditable="true"></td>
-				</tr>
-				<tr id="pointsTotal">
-					<td>20</td>
-					<td>20</td>
-					<td>20</td>
-					<td>20</td>
-				</tr>
-			</tbody>
-		</table>
-		<div id="honors">
-			<h2>Flei&szligiges Bienchen der Woche ist somit: </h2>
-			<h1>Julian</h1>
-			<h2>Die ehrenvolle Auszeichnung "faule Socke" geht diesmal an: </h2>
-			<h1>Christian<h1>
-		</div>
+		<?php include("inc/loadActTable.php");?>	
 		<div id="buttons">
 			<input type="button" value="Save table" onclick="save('tableActivities', '#activities')">
 			<input type="button" value="Load table" onclick="load('tableActivities', '#activities')">
