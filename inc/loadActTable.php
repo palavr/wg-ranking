@@ -39,10 +39,11 @@ foreach (getDoneTasks("Sophisticates") as $task) {
 	// trage in temp array aufgabe ein
 	foreach ($temp as $key => $value) {
 		if ($key == $task["user_name"]){
-			$temp[$key][]= $task["task_name"];
+			$temp[$key][]= Array("name"=> $task["task_name"], "id"=> $task["id"]);
 		}
 	}
 }
+
 
 // bestimme max einträge (= benötigte trs)
 $counts=array_map('count', $temp);
@@ -54,8 +55,8 @@ for ($i = 0; $i <= $max_entries; $i++){
 	echo "<tr class='editable'>";
 	// lese i-ten eintrag aus jedem array aus
 	foreach ($temp as $key => $entries) {
-		
-		if ($entries[$i] == null) {
+
+		if ($entries[$i]["name"] == null) {
 			// schreibe leeres td falls null
 			echo "<td";
 			if ($counts[$key] == $i) {
@@ -64,7 +65,7 @@ for ($i = 0; $i <= $max_entries; $i++){
 			echo "></td>";
 		} else {
 			// schreibe in td falls nicht null
-			echo "<td>".$entries[$i]."</td>";
+			echo "<td task_id='". $entries[$i]["id"] . "'>".$entries[$i]["name"]."</td>";
 		}
 	}
 	echo "</tr>";
@@ -78,11 +79,11 @@ echo "<tr id='pointsTotal'>";
 //echo phpinfo();
 $points= array();
 
-foreach ($temp as $user_name=>$tasks) {
 
+foreach ($temp as $user_name=>$tasks) {
 	$totalPts = 0;
 	foreach ($tasks as $entry) {
-		$totalPts += getPoints($entry);
+		$totalPts += getPoints($entry["id"]);
 	}
 	echo "<td>" . $totalPts . "</td>";
 	$points[$user_name]=$totalPts;
@@ -96,6 +97,9 @@ echo "</tr>";
 echo "</tbody>";
 
 echo "</table>";
+
+
+/***********************	Auszeichnungen	 	 ***********************/
 
 echo "<div id='honors'><h2>Fleißiges Bienchen der Woche ist somit: </h2><h1>" . getHero($points) . "</h1>";
 			
@@ -187,21 +191,25 @@ function getMitbewohner($wg) {
 }
 
 // gibt gespeicherte punkte für gesuchte aufgabe zurück
-function getPoints($task) {
+function getPoints($id) {
 	require("database.php");
 
 	try {
 		// erste query falls points überschrieben sind
 		$result = $db->query("	SELECT points_override 
 								FROM tasks_done
-								WHERE task_name='".$task."';");
+								WHERE id='".$id."';");
 		$result = $result->fetch();
 
 		// zweite query falls default_points
 		if ($result["points_override"] == null){
-			$result = $db->query("	SELECT default_points
-									FROM tasks
-									WHERE task_name='".$task."';");
+			$query = "	SELECT default_points
+						FROM tasks
+						WHERE task_name=(
+								SELECT task_name 
+								FROM tasks_done 
+								WHERE id=". $id . ");";		
+			$result = $db->query($query);
 			$result = $result->fetch();
 
 			return $result["default_points"];

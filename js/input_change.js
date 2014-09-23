@@ -4,6 +4,7 @@
 
 var dataChanged = false;
 
+
 // setze data changed listener
 // gehe alle trs durch
 $('.editable').each(function(i, tr){
@@ -34,8 +35,7 @@ function addBlurEvt(td) {
 		td.addEventListener('blur', function() {
 			if (dataChanged && $(this).text() != ""){
 				var index = getIndex(this);
-				// berechne punkte neu
-				var points = calcPoints(index);
+				$(this).attr('contenteditable', 'false')
 				// setze neue edit zelle
 				// prüfe ob spalte max einträge hat
 				var bool = $('#activities tbody tr:nth-last-child(2)').children().eq(index).text()!="";
@@ -95,11 +95,32 @@ function save(saveId, item) {
 
 // lade saveId aus local storage in destination
 function load(saveId, destination) {
-	if (supports_html5_storage && localStorage[saveId] != null) {
+	window.location.replace('index.php');
+
+	/*if (supports_html5_storage && localStorage[saveId] != null) {
 		$(destination).html(localStorage[saveId]);
 		return true;
 	}
-	return false;
+	return false;*/
+}
+
+// speichert die tabelle in db ab
+function saveDB() {
+	$("#activities tbody .editable").each(function(){
+		$(this).children().each(function() {
+			if(($(this).attr("contenteditable")== undefined || $(this).attr("contenteditable") == "false") && $(this).html()!="") {			
+				$.post("inc/db_save.php", formatActCell($(this)));
+			}
+		});
+	});
+}
+
+// speichere punkte tabelle in db ab 
+function savePtsDB() {
+	$('#punkte tbody').children().each(function() {
+		console.log(formatPunkteCell($(this)));
+//		$.post("inc/db_save.php", formatPunkteCell($(this)));
+	});
 }
 
 /*******************************************************************************************
@@ -131,31 +152,12 @@ function resetTable() {
 	});
 }
 
-// eingabe: spalte welche neu zu berechnen ist.	column ist 0-indiziert. 	!! TODO !!
-function calcPoints(column) {
-	var totalPoints = 30;
-	return totalPoints;
-
-}
-
-// berechne hero und villain	!! TODO !!
-/*function honor(){
-	val ind=0;
-	$.each(array, function(i, val) {
-
-	})
-}*/
-
-///////		VERWALTUNG
-
+// erweitere verwaltungs tabelle
 function addNewActivity() {
 	// lies act aus
 	var activity= $('#dialog').children(':first').val();
 	// überprüfe ob act != ""	
-	if (activity=="") {
-		// falls nein
-			// fehlermeldung	
-	} else {
+	if (activity!="" && !actAlreadyEntered(activity)) {
 		// falls ja
 			// lies values aus
 			var pts = $('#dialog').children(':eq(1)').val();
@@ -171,7 +173,9 @@ function addNewActivity() {
 			$('#dialog').children(':eq(1)').val("");
 			// hide dialog, show btn
 			$('#dialog').hide();
-			$('#showDialogBtn').show();
+			$('#pointBtn').show();
+	} else {
+		console.log("Could not enter new activity.");
 	}
 }
 
@@ -179,15 +183,52 @@ function showDialog() {
 	// open dialog	
 	$('#dialog').show();
 	// hide btn
-	$('#showDialogBtn').hide();
+	$('#pointBtn').hide();
 }
-
 
 
 
 /*******************************************************************************************
 						Utility Functions
 *******************************************************************************************/
+
+// wandelt die activity zelle in speicherbares array um 
+function formatActCell(td) {
+	return data = {
+					"id": 1,
+					"task_id": $(td).attr("task_id"), 
+					"task_name": $(td).html(),
+					"user_name": getUser(td),
+					"wg_name": "Sophisticates"
+				};
+}
+
+// wandelt die verwaltungszelle in speicherbares array um
+function formatPunkteCell(td) {
+	return data = {
+					"id": 2,
+					"task_name": $(td).children().first().html(),
+					"default_points": $(td).children().first().next().html()
+	};
+}
+
+
+// prüft ob act schon in punkte-tabelle eingetragen ist
+function actAlreadyEntered(act) {
+	
+	var ret = false;
+	$('#punkte tbody').children().each(function() {
+		if (!ret && $(this).children().first().html() == act){
+			ret = true;
+		} 
+	});
+	return ret;
+}
+
+// gibt column bzw user der zelle zurück
+function getUser(td) {
+	return $("#activities thead tr").children().eq(getIndex(td)).html();
+}
 
 // gibt zelle darüber an
 function cellAbove(td) {
