@@ -93,17 +93,6 @@ function save(saveId, item) {
 	return false;
 }
 
-// lade saveId aus local storage in destination
-function load(saveId, destination) {
-	window.location.replace('index.php');
-
-	/*if (supports_html5_storage && localStorage[saveId] != null) {
-		$(destination).html(localStorage[saveId]);
-		return true;
-	}
-	return false;*/
-}
-
 // speichert die tabelle in db ab
 function saveDB() {
 	$("#activities tbody .editable").each(function(){
@@ -113,13 +102,14 @@ function saveDB() {
 			}
 		});
 	});
+	location.reload();
 }
 
 // speichere punkte tabelle in db ab 
 function savePtsDB() {
 	$('#punkte tbody').children().each(function() {
 		console.log(formatPunkteCell($(this)));
-//		$.post("inc/db_save.php", formatPunkteCell($(this)));
+		$.post("inc/db_save.php", formatPunkteCell($(this)));
 	});
 }
 

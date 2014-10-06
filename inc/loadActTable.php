@@ -228,32 +228,79 @@ function getPoints($id) {
 function getHero($points) {
 	// check if hero
 	$maxPts = -1;
+	$hero = array();
 	foreach ($points as $user_name => $totalPts) {
 
 		if ($maxPts < $totalPts) {
+			// clear array
+			unset($hero);
+			$hero = array();
 
-			$hero = $user_name;
+			$hero[]= $user_name;
 			$maxPts = $totalPts;
 		} elseif ($maxPts == $totalPts) {
 			$hero[]= $user_name;
 		}
 	}
-	return $hero;
+
+	if (count($hero) == 1) {
+		return $hero[0];
+	}
+
+	$disp = "";
+	$first = true;
+
+	// convert array to string
+	foreach ($hero as $h) {
+		if (!$first) {
+			$disp.=" und ";
+		}
+		$disp.=$h;
+		$first= false;
+	}
+	
+	return $disp;
 }
 
 // ermittelt, wer am wenigsten punkte hat
 function getVillain($points) {
 
 	$minPts = INF;
+	$villain = array();
+
+
 	foreach ($points as $user_name => $totalPts) {
+
 		if ($minPts > $totalPts) {
-			$villain = $user_name;
+			// clear array
+			unset($villain);
+			$villain = array();
+
+			$villain[]= $user_name;
 			$minPts = $totalPts;
 		} elseif ($minPts == $totalPts) {
 			$villain[]= $user_name;
 		}
 	}
-	return $villain;
+
+	if (count($villain) == 1) {
+		return $villain[0];
+	}
+
+	$disp = "";
+	$first = true;
+
+	// convert array to string
+	foreach ($villain as $h) {
+		if (!$first) {
+			$disp.=" und ";
+		}
+		$disp.=$h;
+		$first= false;
+	}
+	
+	return $disp;
+
 }
 
 /********************************************************************************************
