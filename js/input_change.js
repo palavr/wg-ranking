@@ -98,11 +98,14 @@ function saveDB() {
 	$("#activities tbody .editable").each(function(){
 		$(this).children().each(function() {
 			if(($(this).attr("contenteditable")== undefined || $(this).attr("contenteditable") == "false") && $(this).html()!="") {			
-				$.post("inc/db_save.php", formatActCell($(this)));
+				console.log("hey");
+				$.post("inc/db_save.php", formatActCell($(this)), function(success) {
+					location.reload();
+				});
 			}
 		});
 	});
-	location.reload();
+	//location.reload();
 }
 
 // speichere punkte tabelle in db ab 

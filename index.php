@@ -25,7 +25,7 @@
 		<?php include("inc/loadActTable.php");?>	
 		<div id="buttons">
 			<input type="button" value="Save table" onclick="saveDB()">
-			<!---input type="button" value="Load table" onclick="load('tableActivities', '#activities')"--->
+			<!---input type="button" value="Load table" onclick="load('tableActivities', '#activities')"-->
 			<input type="button" value="Neuer Monat -- RESET" onclick="resetTable()">
 		</div>
 	</body>

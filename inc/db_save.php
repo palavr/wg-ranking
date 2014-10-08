@@ -9,9 +9,6 @@
 
 require_once("database.php");
 
-	echo "<pre>";
-	var_dump($_POST);
-
 	if (isset($_POST)) {
 		switch ($_POST['id']) {
 
@@ -23,8 +20,7 @@ require_once("database.php");
 			// abfrage ob task_done schon existiert
 			if($_POST['task_id'] == null || $_POST['task_id'] == -1) {
 			    
-			    // abfrage ob task_done schon in task eingetragen ist
-			    echo "its new";
+			    // abfrage ob task_done schon in task eingetragen ist 				TODO
 
 			    // no entry found, new entry
 				try {
@@ -39,8 +35,10 @@ require_once("database.php");
 				} catch (Exception $e) {
 					echo $e->getMessage();
 				}
+
 				exit;
 			} else {
+
 				// entry found, update entry
 				try {
 					$pdo = $db->prepare("	UPDATE tasks_done
@@ -71,14 +69,11 @@ require_once("database.php");
 				echo "Could not get data.";
 				exit;
 			} 
-			echo "<pre>";
-			var_dump($result);
 
 			// gehe alle entries durch 
 			foreach ($result as $entry) {
 
 				if ($_POST['task_name'] == $entry['task_name']) {
-					echo "found";
 					return;
 				}
 			}
@@ -87,7 +82,7 @@ require_once("database.php");
 			try {		
 				// schreibe in db
 				$pdo = $db->prepare("	INSERT INTO tasks(task_name, wg_name, default_points) 
-										VALUES (:task_name, :wg_name, :default_points)");
+										VALUES (:task_name, :wg_name, :default_points);");
 				$pdo->bindParam(':task_name', $_POST['task_name']);
 				$pdo->bindParam(':default_points', $_POST['default_points']);
 				$name = "Sophisticates";
@@ -96,8 +91,45 @@ require_once("database.php");
 			} catch (Exception $e) {
 				echo $e->getMessage();
 			}		 
-			
+		
+
+		// neuen user anlegen
+		case 3: 
+			// prüfe ob user schon existiert
+			// get user entries 
+			$result;
+			try {
+				$temp = $db->query("	SELECT * 
+										FROM users ;");
+				$result = $temp->fetchAll(PDO::FETCH_ASSOC);
+			} catch (Exception $e) {
+				echo "Could not get data.";
+				exit;
+			} 
+
+			foreach ($result as $entry) {
+				if ($_POST['user_name'] = $entry['user_name']) {
+					// evtl fehlermeldung
+					return;
+				}
+			}
+
+			// falls nicht 
+			// lege neuen user mit daten an
+			try {
+			 	$pdo = $db->prepare("	INSERT INTO users (user_name, password)
+			 							VALUES (:user_name, :password)");
+				$pdo->bindParam(':user_name', $_POST['user_name']);
+				$pdo->bindParam(':password', $_POST['password']);
+				$pdo->execute();
+			 } catch (Exception $e) {
+			 	echo $e->getMessage();	
+			 } 
+
+			// login 
+
 		}
+
 	}
 	
 ?>
